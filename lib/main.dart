@@ -103,11 +103,15 @@ class ReviewNewsfeedPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ListTile(
-                            title: Text(review.title),
+                            title: Text(review.title,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            )),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(review.content),
+                                SizedBox(height: 8), //adding spacing between review content and username
                                 Text(
                                   'Posted by: ${review.username}',
                                   style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
@@ -206,6 +210,7 @@ class ReviewNewsfeedPage extends StatelessWidget {
             ),
           ),
           // Review Form
+          Divider(),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -262,7 +267,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
-  final TextEditingController _commentController = TextEditingController(); // Add this line
+  final TextEditingController _commentController = TextEditingController();
   String _searchQuery = '';
 
   @override

@@ -45,8 +45,8 @@ class Review {
     required this.timestamp,
     this.isLiked = false,
     this.likes = 0,
-    this.comments = const [],
-  });
+    List<Comment>? comments,
+  }) : comments = comments ?? [];
 
   Map<String, dynamic> toJson() => {
     'title': title,
