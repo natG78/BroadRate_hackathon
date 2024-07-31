@@ -73,7 +73,11 @@ class ReviewProvider extends ChangeNotifier {
     _username = newUsername;
     for (var review in _reviews) {
       review.updateUsername(newUsername);
+      for(var comment in review.comments){
+        comment.updateUsername(newUsername);
+      }
     }
+
     _saveReviews();
     _saveUsername();
     notifyListeners();

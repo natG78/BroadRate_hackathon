@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 class Comment {
-  final String username;
+  String username;
   final String content;
   final DateTime timestamp;
 
@@ -26,6 +26,10 @@ class Comment {
   String getFormattedTimestamp() {
     final DateFormat formatter = DateFormat('MM-dd-yyyy hh:mm a');
     return formatter.format(timestamp);
+  }
+
+  void updateUsername(String newUsername) {
+    username = newUsername;
   }
 }
 
