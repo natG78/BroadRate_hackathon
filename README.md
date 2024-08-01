@@ -18,7 +18,8 @@ The project is structured into several pages and widgets:
 - 'review_page.dart': Allows users to write and submit reviews
 - 'profile_page.dart': Displays user profile and total likes
 - 'review_model.dart': Creates the model of a review
-- 'review_provider.dart':
+- 'review_provider.dart': Allows the reviews to be updated and saved
+- 'utils.dart': Gives the format of the date and time for reviews
 
 
 ## Getting Started
@@ -72,5 +73,5 @@ Contributions are welcome! Please fork the repository and create a pull request 
 4. Push to the Branch (git push origin feature/AmazingFeature)
 5. Open a Pull Request
 
-## Contact
+## Creator's Contact
 Natale Gray - natalegray78@gmail.com
