@@ -1,6 +1,6 @@
 # BroadRate - Multi-Tabbed Application
 
-Broadrave is a Flutter-based multi-tabbed application designed for newsfeeds, search functionality, review writing, and profile management. The app allows users to post reviews, search content, manage their profile, and see a newsfeed of reviews.
+BroadRate is a Flutter-based multi-tabbed application designed for newsfeeds, search functionality, review writing, and profile management. The app allows users to post reviews, search content, manage their profile, and see a newsfeed of reviews. This application allows the musical theatre community to discuss shows they have seen, ask questions about shows they want to see, discuss the latest Broadway news, etc.
 
 
 ## Features
@@ -27,6 +27,9 @@ The project is structured into several pages and widgets:
 - Flutter SDK: [Install Flutter](https://flutter.dev/docs/get-started/install)
 - Dart SDK: Included with Flutter
 
+### Running the App
+To run the app on an emulator or physical device, use the following command:
+flutter run
 
 ## Local Storage
 The app uses local storage to persist data, such as posts and usernames, ensuring that information remains available even after the app is closed and reopened.
@@ -61,5 +64,13 @@ In the 'Profile' tab, a user can change their username. This will also change th
 ### Search
 In the 'Search' tab, users can look up key words, and any review that contains those key words will remain underneath the search bar.
 
-## Creator
+## Contributing
+Contributions are welcome! Please fork the repository and create a pull request with your changes.
+1. Fork the Project
+2. Create your Feature Branch (git checkout -b feature/AmazingFeature)
+3. Commit your Changes (git commit -m 'Add some AmazingFeature')
+4. Push to the Branch (git push origin feature/AmazingFeature)
+5. Open a Pull Request
+
+## Contact
 Natale Gray - natalegray78@gmail.com
