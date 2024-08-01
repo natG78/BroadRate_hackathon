@@ -74,15 +74,18 @@ class Review {
     comments: (json['comments'] as List<dynamic>).map((e) => Comment.fromJson(e)).toList(), // Load comments
   );
 
+  //updates username when it is changed
   void updateUsername(String newUsername) {
     username = newUsername;
   }
 
+  //formats the timestamp
   String getFormattedTimestamp() {
     final DateFormat formatter = DateFormat('MM-dd-yyyy hh:mm a');
     return formatter.format(timestamp);
   }
 
+  //adds comment to a review
   void addComment(String username, String content) {
     comments.add(Comment(
       username: username,
@@ -91,6 +94,7 @@ class Review {
     ));
   }
 
+  //changes boolean value for if comment section is visible or not
   void toggleCommentsVisibility(){
     isCommentsVisible = !isCommentsVisible;
   }

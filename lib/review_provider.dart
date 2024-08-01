@@ -40,6 +40,7 @@ class ReviewProvider extends ChangeNotifier {
     prefs.setString('username', _username);
   }
 
+  //adds a review
   void addReview(String title, String content) {
     final review = Review(
       title: title,
@@ -52,12 +53,14 @@ class ReviewProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //adds a comment
   void addComment(Review review, String content) {
     review.addComment(_username, content);
     _saveReviews();
     notifyListeners();
   }
 
+  //adds/subtracts 1 to the like count and changes the like status
   void toggleLike(Review review) {
     review.isLiked = !review.isLiked;
     review.likes += review.isLiked ? 1 : -1;
@@ -65,10 +68,12 @@ class ReviewProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //returns the total amount of likes a user has
   int getTotalLikes(String username) {
     return _reviews.where((review) => review.username == username).fold(0, (sum, review) => sum + review.likes);
   }
 
+  //updates the username for all previous reviews and comments made by that user
   void updateUsername(String newUsername) {
     _username = newUsername;
     for (var review in _reviews) {
@@ -83,6 +88,7 @@ class ReviewProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //deletes a review
   void deleteReview(Review review) {
     _reviews.remove(review);
     _saveReviews();
