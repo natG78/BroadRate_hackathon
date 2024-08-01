@@ -292,7 +292,6 @@ class _ReviewNewsfeedPageState extends State<ReviewNewsfeedPage> {
   }
 }
 
-
 class SearchPage extends StatefulWidget {
   @override
   _SearchPageState createState() => _SearchPageState();
