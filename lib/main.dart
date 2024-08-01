@@ -269,12 +269,6 @@ class ReviewNewsfeedPage extends StatelessWidget {
   }
 }
 
-// Keep other pages unchanged
-
-
-
-
-
 class SearchPage extends StatefulWidget {
   @override
   _SearchPageState createState() => _SearchPageState();
