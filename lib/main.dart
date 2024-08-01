@@ -344,7 +344,10 @@ class _SearchPageState extends State<SearchPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ListTile(
-                      title: Text(review.title),
+                      title: Text(
+                        review.title, 
+                        style: TextStyle(fontWeight: FontWeight.bold)
+                      ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
