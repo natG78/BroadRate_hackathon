@@ -41,6 +41,7 @@ class Review {
   bool isLiked;
   int likes;
   List<Comment> comments; // New field for comments
+  bool isCommentsVisible;
 
   Review({
     required this.title,
@@ -50,6 +51,7 @@ class Review {
     this.isLiked = false,
     this.likes = 0,
     List<Comment>? comments,
+    this.isCommentsVisible = false,
   }) : comments = comments ?? [];
 
   Map<String, dynamic> toJson() => {
@@ -88,4 +90,9 @@ class Review {
       timestamp: DateTime.now(),
     ));
   }
+
+  void toggleCommentsVisibility(){
+    isCommentsVisible = !isCommentsVisible;
+  }
+
 }

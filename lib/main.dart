@@ -74,7 +74,15 @@ class _MainPageState extends State<MainPage> {
   }
 }
 
-class ReviewNewsfeedPage extends StatelessWidget {
+
+class ReviewNewsfeedPage extends StatefulWidget {
+  @override
+  _ReviewNewsfeedPageState createState() => _ReviewNewsfeedPageState();
+}
+
+class _ReviewNewsfeedPageState extends State<ReviewNewsfeedPage> {
+  final TextEditingController _commentController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,13 +91,13 @@ class ReviewNewsfeedPage extends StatelessWidget {
         backgroundColor: Colors.blue,
         elevation: 0,
       ),
-      body: Column(
-        children: [
-          // Review List
-          Expanded(
-            child: Consumer<ReviewProvider>(
-              builder: (context, reviewProvider, child) {
-                return ListView.builder(
+      body: Consumer<ReviewProvider>(
+        builder: (context, reviewProvider, child) {
+          return Column(
+            children: [
+              // Review List
+              Expanded(
+                child: ListView.builder(
                   itemCount: reviewProvider.reviews.length,
                   itemBuilder: (context, index) {
                     final review = reviewProvider.reviews[index];
@@ -100,14 +108,14 @@ class ReviewNewsfeedPage extends StatelessWidget {
                         children: [
                           ListTile(
                             title: Text(review.title,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            )),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                )),
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(review.content),
-                                SizedBox(height: 8), //adding spacing between review content and username
+                                SizedBox(height: 8),
                                 Text(
                                   'Posted by: ${review.username}',
                                   style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
@@ -165,43 +173,58 @@ class ReviewNewsfeedPage extends StatelessWidget {
                             ),
                           ),
                           // Comment Section
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Comments:', style: TextStyle(fontWeight: FontWeight.bold)),
-                                ...review.comments.map((comment) => ListTile(
-                                  title: Text(comment.content),
-                                  subtitle: Text(
-                                    'Posted by: ${comment.username} on ${comment.getFormattedTimestamp()}',
-                                    style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+                          if (review.isCommentsVisible)
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Comments:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                  ...review.comments.map((comment) => ListTile(
+                                    title: Text(comment.content),
+                                    subtitle: Text(
+                                      'Posted by: ${comment.username} on ${comment.getFormattedTimestamp()}',
+                                      style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+                                    ),
+                                  )),
+                                  TextField(
+                                    controller: _commentController,
+                                    decoration: InputDecoration(
+                                      hintText: 'Add a comment...',
+                                    ),
+                                    maxLines: 2,
                                   ),
-                                )),
-                                TextField(
-                                  decoration: InputDecoration(
-                                    hintText: 'Add a comment...',
+                                  SizedBox(height: 8),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      final comment = _commentController.text;
+                                      if (comment.isNotEmpty) {
+                                        reviewProvider.addComment(review, comment);
+                                        _commentController.clear();
+                                      }
+                                    },
+                                    child: Text('Submit Comment'),
                                   ),
-                                  maxLines: 2,
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    // Handle adding a comment
-                                  },
-                                  child: Text('Submit Comment'),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                review.isCommentsVisible = !review.isCommentsVisible;
+                              });
+                            },
+                            child: Text(review.isCommentsVisible ? 'Hide Comments' : 'Show Comments'),
                           ),
                         ],
                       ),
                     );
                   },
-                );
-              },
-            ),
-          ),
-        ],
+                ),
+              ),
+            ],
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showReviewForm(context),
@@ -268,11 +291,6 @@ class ReviewNewsfeedPage extends StatelessWidget {
     );
   }
 }
-
-// Keep other pages unchanged
-
-
-
 
 
 class SearchPage extends StatefulWidget {
@@ -352,44 +370,61 @@ class _SearchPageState extends State<SearchPage> {
                                 },
                               ),
                               Text(review.likes.toString()),
+                              // Button to toggle comments visibility
+                              TextButton(
+                                onPressed: () {
+                                  review.toggleCommentsVisibility();
+                                  reviewProvider.notifyListeners(); // Notify listeners to refresh UI
+                                },
+                                child: Text(review.isCommentsVisible ? 'Hide Comments' : 'Show Comments'),
+                              ),
                             ],
                           ),
                         ],
                       ),
                     ),
-                    // Comment Section
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Comments:', style: TextStyle(fontWeight: FontWeight.bold)),
-                          ...review.comments.map((comment) => ListTile(
-                            title: Text(comment.content),
-                            subtitle: Text(
-                              'Posted by: ${comment.username} on ${comment.getFormattedTimestamp()}',
-                              style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+                    // Conditional comments section
+                    if (review.isCommentsVisible)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Comments:', style: TextStyle(fontWeight: FontWeight.bold)),
+                            ...review.comments.map((comment) => ListTile(
+                              title: Text(comment.content),
+                              subtitle: Text(
+                                'Posted by: ${comment.username} on ${comment.getFormattedTimestamp()}',
+                                style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+                              ),
+                            )),
+                            TextField(
+                              controller: _commentController,
+                              decoration: InputDecoration(
+                                hintText: 'Add a comment...',
+                              ),
+                              maxLines: 2,
+                              onSubmitted: (text) {
+                                if (text.isNotEmpty) {
+                                  reviewProvider.addComment(review, text);
+                                  _commentController.clear();
+                                }
+                              },
                             ),
-                          )),
-                          TextField(
-                            controller: _commentController,
-                            decoration: InputDecoration(
-                              hintText: 'Add a comment...',
+                            SizedBox(height: 8),
+                            ElevatedButton(
+                              onPressed: () {
+                                final comment = _commentController.text;
+                                if (comment.isNotEmpty) {
+                                  reviewProvider.addComment(review, comment);
+                                  _commentController.clear();
+                                }
+                              },
+                              child: Text('Submit Comment'),
                             ),
-                            maxLines: 2,
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              if (_commentController.text.isNotEmpty) {
-                                reviewProvider.addComment(review, _commentController.text);
-                                _commentController.clear();
-                              }
-                            },
-                            child: Text('Submit Comment'),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
                   ],
                 ),
               );
@@ -400,6 +435,7 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 }
+
 
 
 class ProfilePage extends StatefulWidget {
